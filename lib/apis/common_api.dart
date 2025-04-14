@@ -6,10 +6,14 @@ import 'package:http/http.dart' as http;
 Future<TokenResponse> refreshTokens() async {
   final refreshToken = await getRefreshToken();
   final pushNotificationToken = await getPushNotificationToken();
+  final accessToken = await getAccessToken();
 
   final url = Uri.parse('$configApiBaseUrl/Auth/RefreshTokens');
 
-  final headers = {'Content-Type': 'application/json'};
+  final headers = {
+    'Content-Type': 'application/json',
+    if (accessToken != null) 'Authorization': 'Bearer $accessToken',
+  };
 
   final requestBody = {
     'refreshToken': refreshToken,
@@ -26,7 +30,7 @@ Future<TokenResponse> refreshTokens() async {
 
     return tokens;
   } else {
-    throw Exception('Failed to add route: ${response.reasonPhrase}');
+    throw Exception('Failed to refresh tokens: ${response.reasonPhrase}');
   }
 }
 
