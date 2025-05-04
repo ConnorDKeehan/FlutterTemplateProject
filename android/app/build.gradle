@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.connormdk.fluttertemplateproj"
+    namespace = "com.connormdk.songguessgame"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.connormdk.fluttertemplateproj"
+        applicationId = "com.connormdk.songguessgame"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -54,6 +54,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.12.0')
     implementation 'com.google.firebase:firebase-analytics'
 }
+
+
 
 
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertemplateproj/features/auth/auth_api.dart';
-import 'package:fluttertemplateproj/features/auth/login_page/login_page.dart';
+import 'package:songguessgame/features/auth/auth_api.dart';
+import 'package:songguessgame/features/auth/login_page/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -146,6 +146,8 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
+
+
 
 
 

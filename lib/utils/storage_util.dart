@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fluttertemplateproj/models/responses/token_response.dart';
+import 'package:songguessgame/models/responses/token_response.dart';
 
 // Flutter Secure Storage instance
 const storage = FlutterSecureStorage();
@@ -29,5 +29,7 @@ Future<String?> getRefreshToken() async {
   return refreshToken;
 }
 
-const configApiBaseUrl = 'XXXXXXX';
+const configApiBaseUrl = 'https://songguessgame-bngncwc9fqhpadhb.australiaeast-01.azurewebsites.net';
 const configApiSuccessResponses = [200, 201, 204];
+
+

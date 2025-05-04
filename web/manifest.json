@@ -1,6 +1,6 @@
 {
-    "name": "fluttertemplateproj",
-    "short_name": "fluttertemplateproj",
+    "name": "songguessgame",
+    "short_name": "songguessgame",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
@@ -33,6 +33,8 @@
         }
     ]
 }
+
+
 
 
 

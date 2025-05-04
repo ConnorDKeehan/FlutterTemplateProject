@@ -1,17 +1,16 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertemplateproj/features/auth/login_page/login_page.dart';
-import 'package:fluttertemplateproj/features/main_page/main_page.dart';
-import 'package:fluttertemplateproj/services/push_notification_service.dart';
-import 'package:fluttertemplateproj/utils/storage_util.dart';
+import 'package:songguessgame/features/auth/login_page/login_page.dart';
+import 'package:songguessgame/features/view_all_new_games_page/view_all_new_games_page.dart';
+import 'package:songguessgame/services/signal_r_service.dart';
+import 'package:songguessgame/utils/storage_util.dart';
 import 'apis/common_api.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+final signalR = SignalRService();
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  _initializePushNotifications();
 
   runApp(SafeArea(
       child: MaterialApp(
@@ -35,7 +34,7 @@ void main() {
               } else {
                 if (snapshot.data == true) {
                   // Token is valid, proceed to MapView
-                  return const MainPage();
+                  return const ViewAllNewGamesPage();
                 } else {
                   // No valid token, show LoginPage
                   return const LoginPage();
@@ -45,22 +44,18 @@ void main() {
           ))));
 }
 
-void _initializePushNotifications() async {
-  await Firebase.initializeApp();
-  // Initialize Push Notification Service
-  PushNotificationService notificationService = PushNotificationService();
-  await notificationService.initialize();
-}
-
 Future<bool> _checkUserIsLoggedInAndRefreshTokens() async {
   try {
     final newTokens = await refreshTokens();
     await setTokens(newTokens);
+    await signalR.start(newTokens.jwtToken);
     return true;
   } catch (e) {
     return false;
   }
 }
+
+
 
 
 

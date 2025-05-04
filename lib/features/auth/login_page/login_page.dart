@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:fluttertemplateproj/features/auth/auth_api.dart';
-import 'package:fluttertemplateproj/features/auth/register_page/register_page.dart';
-import 'package:fluttertemplateproj/features/main_page/main_page.dart';
-import 'package:fluttertemplateproj/utils/storage_util.dart';
+import 'package:songguessgame/features/auth/auth_api.dart';
+import 'package:songguessgame/features/auth/register_page/register_page.dart';
+import 'package:songguessgame/features/view_all_new_games_page/view_all_new_games_page.dart';
+import 'package:songguessgame/main.dart';
+import 'package:songguessgame/utils/storage_util.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -40,125 +37,16 @@ class _LoginPageState extends State<LoginPage> {
         final tokens = await login(username, password);
         // Store the token
         await setTokens(tokens);
+        await signalR.start(tokens.jwtToken);
 
         // Navigate to MapView and replace LoginPage
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const MainPage()),
+          MaterialPageRoute(builder: (context) => const ViewAllNewGamesPage()),
         );
       } catch (e) {
         setState(() {
           errorMessage = 'Login failed: Invalid username or password';
-          isLoading = false;
-        });
-      }
-    }
-  }
-
-  /// Google Sign-In
-  Future<void> _signInWithGoogle() async {
-    setState(() {
-      isLoading = true;
-      errorMessage = '';
-    });
-
-    try {
-      final googleSignIn = GoogleSignIn(
-        // Optionally specify the scopes, if you need more than basic profile info
-        scopes: <String>[
-          'email',
-        ],
-        serverClientId:
-            '685001516638-odmd19sl6898cc1a6gl7qudu2f4ich2a.apps.googleusercontent.com', //XXXXXXX
-      );
-
-      // Attempt to sign in silently first. If that fails, prompt user.
-      //GoogleSignInAccount? account = await googleSignIn.signInSilently();
-      final account =
-          await googleSignIn.signIn(); // if still null, show Google UI
-
-      if (account == null) {
-        // User canceled the sign-in
-        throw Exception('Google Sign-In canceled');
-      }
-
-      // googleAuth.idToken is what we usually send to our server
-      final idToken = account.serverAuthCode;
-
-      if (idToken == null) {
-        throw Exception('No Google ID Token found');
-      }
-
-      // Now, exchange the Google ID token for your app's access token
-      final tokens = await loginWithSocial('google', idToken, null);
-      await setTokens(tokens);
-
-      // Navigate to your main screen
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MainPage()),
-        );
-      }
-    } catch (error) {
-      setState(() {
-        errorMessage = 'Google Sign-In failed: $error';
-      });
-    } finally {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    }
-  }
-
-  /// Apple Sign-In
-  Future<void> _signInWithApple() async {
-    setState(() {
-      isLoading = true;
-      errorMessage = '';
-    });
-
-    try {
-      // Check if Apple SignIn is available on the current platform
-      final isAvailable = await SignInWithApple.isAvailable();
-      if (!isAvailable) {
-        throw Exception('Sign in with Apple is not available on this device');
-      }
-
-      // Perform the Apple sign-in request
-      final credential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-      );
-
-      // This is the Apple ID token you send to your server
-      final friendlyName = credential.givenName;
-      final appleIdToken = credential.identityToken;
-      if (appleIdToken == null) {
-        throw Exception('No Apple ID Token found');
-      }
-
-      // Exchange Apple ID token for your app's access token
-      final tokens = await loginWithSocial('apple', appleIdToken, friendlyName);
-      await setTokens(tokens);
-
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MainPage()),
-        );
-      }
-    } catch (error) {
-      setState(() {
-        errorMessage = 'Apple Sign-In failed: $error';
-      });
-    } finally {
-      if (mounted) {
-        setState(() {
           isLoading = false;
         });
       }
@@ -266,14 +154,16 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const MainPage(),
+                                  builder: (context) => const ViewAllNewGamesPage(),
                                 ),
                               );
                             },
                             child: const Text(
                                 "Don't want to sign up? Continue as guest"),
                           ),
-                          const SizedBox(height: 24),
+
+                          //Commenting out login with google/apple for now
+                          /*const SizedBox(height: 24),
 
                           // SIGN IN WITH GOOGLE
                           SignInButton(Buttons.GoogleDark,
@@ -284,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 8),
                           if (Platform.isIOS)
                             SignInButton(Buttons.AppleDark,
-                                onPressed: _signInWithApple),
+                                onPressed: _signInWithApple),*/
                         ],
                       ),
                     ),
@@ -295,6 +185,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+
 
 
 

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:fluttertemplateproj/models/responses/token_response.dart';
-import 'package:fluttertemplateproj/utils/storage_util.dart';
+import 'package:songguessgame/models/responses/token_response.dart';
+import 'package:songguessgame/utils/storage_util.dart';
 
 Future<TokenResponse> login(String username, String password) async {
   final url = Uri.parse('$configApiBaseUrl/Auth/Login');
@@ -82,6 +82,8 @@ Future<void> registerUser(
     throw Exception('Failed to register user: ${response.reasonPhrase}');
   }
 }
+
+
 
 
 
