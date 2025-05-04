@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:songguessgame/models/responses/token_response.dart';
-import 'package:songguessgame/utils/storage_util.dart';
+import 'package:fluttertemplateproj/models/responses/token_response.dart';
+import 'package:fluttertemplateproj/utils/storage_util.dart';
 import 'package:http/http.dart' as http;
 
 Future<TokenResponse> refreshTokens() async {
@@ -33,8 +33,6 @@ Future<TokenResponse> refreshTokens() async {
     throw Exception('Failed to refresh tokens: ${response.reasonPhrase}');
   }
 }
-
-
 
 
 

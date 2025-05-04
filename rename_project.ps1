@@ -1,5 +1,5 @@
-$currentAppName = "fluttertemplateproj"
-$newAppName = "songguessgame"
+$currentAppName = "warmreminders"
+$newAppName = "fluttertemplateproj"
 
 # 1. Rename files and directories with valid paths
 Get-ChildItem -Recurse -Force | 
